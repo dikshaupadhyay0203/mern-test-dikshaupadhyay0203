@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import axios from "axios";
 
 function Dashboard() {
@@ -6,7 +7,8 @@ function Dashboard() {
   const [tasks, setTasks] = useState([]);
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
-
+    const navigate = useNavigate();
+  
   const fetchTasks = async () => {
     try {
 
@@ -76,7 +78,11 @@ function Dashboard() {
   useEffect(()=>{
     fetchTasks();
   },[]);
- 
+ const logout = () => {
+    localStorage.removeItem("token");
+    navigate("/login");
+  };
+
 
   return (
     <div>
@@ -97,6 +103,7 @@ function Dashboard() {
           value={description}
           onChange={(e)=>setDescription(e.target.value)}
         />
+        <button onClick={logout}>Logout</button>
 
         <button type="submit">Create Task</button>
 
