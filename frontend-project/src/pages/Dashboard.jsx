@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
-
+import "./Dashboard.css";
 function Dashboard() {
   const [tasks, setTasks] = useState([]);
   const [title, setTitle] = useState("");
@@ -109,10 +109,14 @@ function Dashboard() {
   }, [navigate]);
 
   return (
-    <div>
-      <h2>Dashboard</h2>
+    <div className="dashboard-page">
+      <div className="dashboard-container">
+      <div className="dashboard-header">
+        <h2>Dashboard</h2>
+        <button className="btn-secondary" type="button" onClick={logout}>Logout</button>
+      </div>
 
-      <form onSubmit={createTask}>
+      <form className="task-form" onSubmit={createTask}>
         <input
           type="text"
           placeholder="Task Title"
@@ -128,15 +132,14 @@ function Dashboard() {
           onChange={(e) => setDescription(e.target.value)}
           required
         />
-        <button type="submit">Create Task</button>
+        <button className="btn-primary" type="submit">Create Task</button>
       </form>
-
-      <button onClick={logout}>Logout</button>
 
       <h3>Your Tasks</h3>
 
+      <div className="task-list">
       {tasks.map((task) => (
-        <div key={task._id}>
+        <div className="task-card" key={task._id}>
           {editingTask === task._id ? (
             <>
               <input
@@ -158,20 +161,24 @@ function Dashboard() {
                 <option value="completed">completed</option>
               </select>
 
-              <button onClick={() => saveUpdate(task._id)}>Save</button>
+              <button className="btn-primary" type="button" onClick={() => saveUpdate(task._id)}>Save</button>
             </>
           ) : (
             <>
-              <p>
+              <p className="task-title">
                 {task.title} - {task.status}
               </p>
-              <p>{task.description}</p>
-              <button onClick={() => startEdit(task)}>Edit</button>
-              <button onClick={() => deleteTask(task._id)}>Delete</button>
+              <p className="task-description">{task.description}</p>
+              <div className="task-actions">
+                <button className="btn-secondary" type="button" onClick={() => startEdit(task)}>Edit</button>
+                <button className="btn-danger" type="button" onClick={() => deleteTask(task._id)}>Delete</button>
+              </div>
             </>
           )}
         </div>
       ))}
+      </div>
+      </div>
     </div>
   );
 }
